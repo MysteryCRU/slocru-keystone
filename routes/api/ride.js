@@ -36,11 +36,6 @@ exports.update = function(req, res) {
 
 // adds a passenger to the current ride
 exports.addPassenger = function(req, res) {  
-        if(req.method == 'OPTIONS'){
-           res.apiResponse(204);
-	   return;
-        }
-
     keystone.list("Passenger").model.findOne().where("_id", req.body.passenger_id).exec(function(err, passenger) {
         model.findOne().where("_id", req.body.ride_id).populate("event").exec(function(err, ride) {
             if (ride.passengers.indexOf(req.body.passenger_id) == -1)
@@ -76,10 +71,6 @@ exports.addPassenger = function(req, res) {
 
 // adds a passenger to the current ride
 exports.dropPassenger = function(req, res) { 
-        if(req.method == 'OPTIONS'){
-           res.apiResponse(204);
-           return;
-        }
     keystone.list("Passenger").model.findOne().where("_id", req.body.passenger_id).exec(function(err, passenger) {
         model.findOne().where("_id", req.body.ride_id).populate("event").exec(function(err, ride) {
             if (err){
@@ -144,10 +135,6 @@ exports.dropPassenger = function(req, res) {
 }
 
 exports.dropRide = function(req, res) {
-        if(req.method == 'OPTIONS'){
-           res.apiResponse(204);
-           return;
-        }
     if(!req.body.ride_id){
        return res.apiError(400,"incorrect payload", "ride_id not defined in payload",400);
     }
@@ -196,10 +183,6 @@ exports.dropRide = function(req, res) {
 
 // Allows for complex queries sent from a device to the server
 exports.search = function(req, res) {
-        if(req.method == 'OPTIONS'){
-           res.apiResponse(204);
-           return;
-        }
     model.find(req.body.conditions, req.body.projection, req.body.options, function(err, item) {
        if (err) return res.apiError('database error', err);
        res.apiResponse(item);
